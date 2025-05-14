@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abid Bot Services - Inquiry Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-top: 20px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .response {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Abid Bot Services - Inquiry Form</h2>
+    <form id="inquiry-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required />
+
+      <label for="phone">Phone Number:</label>
+      <input type="text" id="phone" required />
+
+      <label for="bot_type">Bot Type:</label>
+      <select id="bot_type" required>
+        <option>Clinic Appointment Bot</option>
+        <option>Hospital Bot</option>
+        <option>School Bot</option>
+        <option>Small Business Bot</option>
+        <option>Big Business Bot</option>
+        <option>Shop Bot</option>
+        <option>Other</option>
+      </select>
+
+      <label for="location">Location:</label>
+      <input type="text" id="location" required />
+
+      <label for="budget">Budget:</label>
+      <select id="budget" required>
+        <option>25K (Basic Features)</option>
+        <option>30K (Medium Features)</option>
+        <option>35K (Advanced)</option>
+        <option>40K (Full Features)</option>
+      </select>
+
+      <label for="message">Message (Optional):</label>
+      <textarea id="message"></textarea>
+
+      <button type="submit">Submit</button>
+      <div class="response" id="response"></div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('inquiry-form');
+    const responseEl = document.getElementById('response');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById('name').value,
+        phone_number: document.getElementById('phone').value,
+        bot_type: document.getElementById('bot_type').value,
+        location: document.getElementById('location').value,
+        budget: document.getElementById('budget').value,
+        message: document.getElementById('message').value
+      };
+
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycby7XhBs2oUQHpbw7T7IbcBBbsE6hHe7zF_2jfvuM4zotkHZkHLu6wqEIqcagkFpZjY/exec", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        const text = await res.text();
+        responseEl.innerText = `✅ ${text}`;
+        form.reset();
+      } catch (err) {
+        responseEl.innerText = `❌ Error: ${err}`;
+        responseEl.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
